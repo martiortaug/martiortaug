@@ -148,8 +148,7 @@ void showDrawnCard(string player, int card, int cardValue, int suit) {
 	// Reveal house first card
 	else {
 		cout << "The house reveals its first card:";
-		Sleep(1000);
-		showHiddenCard = false;
+		Sleep(1000);	
 	}
 	if (player == dlName && hideFirstCard) {
 		cout << " card.\n";
@@ -206,18 +205,31 @@ void showDrawnCard(string player, int card, int cardValue, int suit) {
 			}
 		}
 	}
+	if (dlPoints == 21 && showHiddenCard) {
+		Sleep(1000);
+		cout << "\n21 BLACKJACK\n\n";
+		Sleep(1000);
+	}
+	if (showHiddenCard) {
+		showHiddenCard = false;
+	}
 }
 
 bool drawCards(int& totalPoints, string player, bool win) {
 	int randomSuit = rand() % suit;
 	int randomCard = rand() % card;
 
-	// TEST ACE
+	// TEST	//
 	/*
-	randomSuit = 0;
-	randomCard = 0;
+	if (player == dlName && hideFirstCard) {
+		randomSuit = 0;
+		randomCard = 0;
+	}
+	else if (player == dlName && !hideFirstCard) {
+		randomSuit = 0;
+		randomCard = 10;
+	}
 	*/
-	
 
 	if (deck[randomSuit][randomCard] == 0) {
 		for (int i = 0; i < (card * suit); i++) {
@@ -271,9 +283,11 @@ bool drawCards(int& totalPoints, string player, bool win) {
 	Sleep(2600);
 
 	if (totalPoints == 21) {
-		Sleep(1000);
-		cout << "\n21 BLACKJACK\n\n";
-		Sleep(1000);
+		if (player != dlName && showHiddenCard) {
+			Sleep(1000);
+			cout << "\n21 BLACKJACK\n\n";
+			Sleep(1000);
+		}
 		win = true;
 	}
 

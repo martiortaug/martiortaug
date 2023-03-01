@@ -5,7 +5,6 @@
 #include <windows.h>
 #include <ctime>
 #include <string>
-#include <consoleapi.h>
 
 using namespace std;
 

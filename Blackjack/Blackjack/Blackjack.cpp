@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <ctime>
 #include <string>
+#include <consoleapi.h>
 
 using namespace std;
 
@@ -26,7 +27,7 @@ int dlPoints;
 bool dlWin = false;
 bool hideFirstCard;
 bool showHiddenCard;
-int shownCardValue;
+int shownCard, shownCardValue;
 int hiddenCard, hiddenCardValue, hiddenSuit;
 
 
@@ -56,7 +57,7 @@ void initializeDeck() {
 }
 
 void placeBet(int& amountBank, int& amountBet) {
-	bool playerBet = false;
+	bool playerHasBet = false;
 	int bet;
 		do {
 			if (amountBank > 0) {
@@ -78,7 +79,7 @@ void placeBet(int& amountBank, int& amountBet) {
 						cout << "Bank: " << amountBank << " - " << amountBet << "\n";
 						cout << "Bank: " << amountBank - amountBet << "\n";
 						amountBank = amountBank - amountBet;
-						playerBet = true;
+						playerHasBet = true;
 					}
 					break;
 				case 2:
@@ -91,7 +92,7 @@ void placeBet(int& amountBank, int& amountBet) {
 						cout << "Bank: " << amountBank << " - " << amountBet << "\n";
 						cout << "Bank: " << amountBank - amountBet << "\n";
 						amountBank = amountBank - amountBet;
-						playerBet = true;
+						playerHasBet = true;
 					}
 					break;
 				case 3:
@@ -104,7 +105,7 @@ void placeBet(int& amountBank, int& amountBet) {
 						cout << "Bank: " << amountBank << " - " << amountBet << "\n";
 						cout << "Bank: " << amountBank - amountBet << "\n";
 						amountBank = amountBank - amountBet;
-						playerBet = true;
+						playerHasBet = true;
 					}
 					break;
 				case 4:
@@ -117,7 +118,7 @@ void placeBet(int& amountBank, int& amountBet) {
 						cout << "Bank: " << amountBank << " - " << amountBet << "\n";
 						cout << "Bank: " << amountBank - amountBet << "\n";
 						amountBank = amountBank - amountBet;
-						playerBet = true;
+						playerHasBet = true;
 					}
 					break;
 				case 5:
@@ -125,14 +126,14 @@ void placeBet(int& amountBank, int& amountBet) {
 					cout << "Bank: " << amountBank << " - " << amountBet << "\n";
 					cout << "Bank: " << amountBank - amountBet << "\n";
 					amountBank = amountBank - amountBank;
-					playerBet = true;
+					playerHasBet = true;
 					break;
 				default:
 					cout << "Invalid selection.\n";
 					break;
 				}
 			}
-		} while (!playerBet);
+		} while (!playerHasBet);
 	}
 
 void showDrawnCard(string player, int card, int cardValue, int suit) {
@@ -148,6 +149,7 @@ void showDrawnCard(string player, int card, int cardValue, int suit) {
 	// Reveal house first card
 	else {
 		cout << "The house reveals its first card:";
+		Sleep(1000);
 		showHiddenCard = false;
 	}
 	if (player == dlName && hideFirstCard) {
@@ -216,6 +218,7 @@ bool drawCards(int& totalPoints, string player, bool win) {
 	randomSuit = 0;
 	randomCard = 0;
 	*/
+	
 
 	if (deck[randomSuit][randomCard] == 0) {
 		for (int i = 0; i < (card * suit); i++) {
@@ -255,6 +258,7 @@ bool drawCards(int& totalPoints, string player, bool win) {
 
 	if (!hideFirstCard) {
 		shownCardValue = randomCardValue;
+		shownCard = randomCard;
 	}
 	else {
 		hiddenCard = randomCard;
@@ -265,7 +269,7 @@ bool drawCards(int& totalPoints, string player, bool win) {
 	// Show drawn card
 	showDrawnCard(player,randomCard,randomCardValue,randomSuit);
 
-	Sleep(2000);
+	Sleep(2600);
 
 	if (totalPoints == 21) {
 		Sleep(1000);
@@ -282,8 +286,6 @@ bool drawCards(int& totalPoints, string player, bool win) {
 	}
 	return false;
 }
-
-
 
 void plSelect() {
 		do {
@@ -364,12 +366,23 @@ void checkWinner() {
 
 bool continueGame() {
 	char endGame;
-	cout << "Do you want to continue? y/n\n";
+	if (bank < 5000) {
+		cout << "Do you want to continue? y/n\n";
+	}
+	else {
+		cout << "Will you put up a fight? y/n\n";
+	}
 	cin >> endGame;
 	if (endGame == 'y' || endGame == 'Y') {
 		return false;
 	}
 	else if (endGame == 'n' || endGame == 'N') {
+		/*
+		if (bank > 5000) {
+			bank = 0;
+			cout << "The men in suits took your money and kicked you out.\n";
+		}
+		*/
 		return true;
 	}
 	else {
@@ -419,7 +432,12 @@ int main()
 		drawCards(plPoints, plName, plWin);
 		drawCards(dlPoints, dlName, dlWin);
 		cout << "\nYou have " << plPoints << " points.\n";
-		cout << "The house has " << shownCardValue << " points.\n";
+		if (shownCard == 0) {
+			cout << "The house has an ace.\n";
+		}
+		else {
+			cout << "The house has " << shownCardValue << " points.\n";
+		}
 		if (plPoints == 21 && dlPoints < 17) {
 			checkWinner();
 		}
@@ -433,7 +451,7 @@ int main()
 			gameOver = true;
 			break;
 		}
-		gameOver = continueGame();		
+		gameOver = continueGame();
 	}
 
 	if (gameOver) {

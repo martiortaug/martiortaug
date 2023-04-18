@@ -9,18 +9,16 @@ string graphBoat = "[|||D>";
 int lnCount = 0;
 bool plWin = false;
 bool cpuWin = false;
-Boat player;
-Boat cpu;
 
 string gameIntro() {
 	string plName;
 	srand(time(0));
-	cout << "\n\t\t******************************";
+	cout << "\n\t\t\033[36m******************************";
 	cout << "\n\t\t*\t\t\t     *";
-	cout << "\n\t\t*\tNitro League 2\t     *";
+	cout << "\n\t\t*\t\033[37mNITRO LEAGUE 2\033[36m\t     *";
 	cout << "\n\t\t*\t\t\t     *";
-	cout << "\n\t\t******************************";
-	cout << "\n\nWelcome to the most exciting boat race!\nPlease insert your racer name:" << endl;
+	cout << "\n\t\t******************************\033[37m";
+	cout << "\n\nWelcome to Nitro League 2, the most exciting boat race!\nPlease insert your racer name:" << endl;
 	cin >> plName;
 	cout << "The race begins in..." << endl;
 	Sleep(1000);
@@ -37,7 +35,7 @@ string gameIntro() {
 bool askNitro(Boat& player) {
 	if (player.getNitro()) {
 		char choice;
-		cout << "Use nitro? y/n" << endl;
+		cout << "\033[35mUse nitro?\033[37m y/n" << endl;
 		cin >> choice;
 		if (choice == 'y' || choice == 'Y') {
 			player.setNitro(false);
@@ -75,11 +73,11 @@ void plTurn(Boat& player, int currentTurn) {
 				if (askNitro(player)) {
 					if (player.useNitro()) {
 						Sleep(1500);
-						cout << "NITRO SUCCESS! Speed is doubled!!" << endl;
+						cout << "\033[42m\033[30mNITRO SUCCESS!\033[40m\033[37m Speed is doubled!!" << endl;
 						Sleep(1000);
 					}
 					else {
-						cout << "NITRO FAIL! Speed is halved..." << endl;
+						cout << "\033[41m\033[30mNITRO FAIL!\033[40m\033[37m Speed is halved..." << endl;
 						Sleep(1000);
 					}
 				}
@@ -91,11 +89,11 @@ void plTurn(Boat& player, int currentTurn) {
 				cout << "Player " << player.getName() << " uses NITRO BOOST!" << endl;
 				Sleep(1500);
 				if (player.useNitro()) {
-					cout << "NITRO SUCCESS! Speed is doubled!!" << endl;
+					cout << "\033[42m\033[30mNITRO SUCCESS!\033[40m\033[37m Speed is doubled!!" << endl;
 					Sleep(1000);
 				}
 				else {
-					cout << "NITRO FAIL! Speed is halved..." << endl;
+					cout << "\033[41m\033[30mNITRO FAIL!\033[40m\033[37m Speed is halved..." << endl;
 					Sleep(1000);
 				}
 			}
@@ -124,12 +122,12 @@ void boatGraphics(Boat player) {
 	}
 	if (preDist > 0) {
 		for (int i = 0; i < preDist; i++) {
-			cout << "===";
+			cout << "\033[34m===\033[37m";
 		}
 	}
 	for (int i = 0; i < player.getTurnDie(); i++) {
 		for (int j = i; j >= 0; j--) {
-			cout << "===";
+			cout << "\033[34m===\033[37m";
 		}
 		cout << graphBoat << endl;
 		cout << "\033[A"; //Mover cursor una línea hacia arriba
@@ -153,25 +151,24 @@ int main()
 	//Objects
 	Boat plBoat(plName, 0, 0, true, "H", 0);
 	Boat cpuBoat(cpuName, 0, 0, true, "M", 0);
-	player = plBoat;
-	cpu = cpuBoat;
 
 	for (int i = 1; i <= 5; i++) {
-		cout << "\n\nTURN " << i << "\n";
-		cout << "\nYour turn." << endl;
+		cout << "\033[2J\033[H";
+		cout << "\n\n\033[33mROUND " << i << "\033[37m\n";
+		cout << "\n\033[32mYour turn.\033[37m" << endl;
 		Sleep(500);
 		plTurn(plBoat,i);
-		cout << "\nCPU turn." << endl;
+		cout << "\n\033[31mCPU turn.\033[37m" << endl;
 		Sleep(500);
 		plTurn(cpuBoat,i);
 		boatGraphics(plBoat);
 		boatGraphics(cpuBoat);
 
-		if (player.getDistance() > cpu.getDistance()) {
+		if (plBoat.getDistance() > cpuBoat.getDistance()) {
 			plWin = true;
 			cpuWin = false;
 		}
-		else if (player.getDistance() < cpu.getDistance()) {
+		else if (plBoat.getDistance() < cpuBoat.getDistance()) {
 			plWin = false;
 			cpuWin = true;
 		}
@@ -183,19 +180,22 @@ int main()
 
 	if (plWin && !cpuWin) {
 		Sleep(1500);
-		cout << "\n\nYou won!!" << endl;
+		cout << "\033[2J\033[H";
+		cout << "\n\n\033[42m\033[30mYou won!!\033[40m\033[37m" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
 	}
 	else if (!plWin && cpuWin) {
 		Sleep(1500);
-		cout << "\n\nYou lost..." << endl;
+		cout << "\033[2J\033[H";
+		cout << "\n\n\033[41m\033[30mYou lost...\033[40m\033[37m" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
 	}
-	else {
+	else if (!plWin && !cpuWin) {
 		Sleep(1500);
-		cout << "\n\nIt's a draw!" << endl;
+		cout << "\033[2J\033[H";
+		cout << "\n\n\033[43m\033[30mIt's a draw!\033[40m\033[37m" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
 	}

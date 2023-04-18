@@ -13,22 +13,27 @@ bool cpuWin = false;
 string gameIntro() {
 	string plName;
 	srand(time(0));
+	PlaySound(TEXT("start.wav"), NULL, SND_ASYNC);
 	cout << "\n\t\t\033[36m******************************";
 	cout << "\n\t\t*\t\t\t     *";
 	cout << "\n\t\t*\t\033[37mNITRO LEAGUE 2\033[36m\t     *";
 	cout << "\n\t\t*\t\t\t     *";
 	cout << "\n\t\t******************************\033[37m";
 	cout << "\n\nWelcome to Nitro League 2, the most exciting boat race!\nPlease insert your racer name:" << endl;
+
+
 	cin >> plName;
 	cout << "The race begins in..." << endl;
 	Sleep(1000);
 	cout << "3..." << endl;
-	Sleep(1000);
+	Beep(400, 700);
 	cout << "2..." << endl;
-	Sleep(1000);
+	Beep(400, 700);
 	cout << "1..." << endl;
-	Sleep(1000);
+	Beep(400, 700);
 	cout << "GO!!!" << endl;
+	Beep(800, 1500);
+
 	return plName;
 }
 
@@ -108,6 +113,7 @@ void plTurn(Boat& player, int currentTurn) {
 		
 }
 
+
 void boatGraphics(Boat player) {
 	cout << "\n\n";
 	int preDist = player.getSpeed() - player.getTurnDie();
@@ -151,7 +157,7 @@ int main()
 	//Objects
 	Boat plBoat(plName, 0, 0, true, "H", 0);
 	Boat cpuBoat(cpuName, 0, 0, true, "M", 0);
-
+	PlaySound(TEXT("race.wav"), NULL, SND_LOOP | SND_ASYNC);
 	for (int i = 1; i <= 5; i++) {
 		cout << "\033[2J\033[H";
 		cout << "\n\n\033[33mROUND " << i << "\033[37m\n";
@@ -178,26 +184,31 @@ int main()
 		}
 	}
 
-	if (plWin && !cpuWin) {
+	if (plWin && !cpuWin) {		
 		Sleep(1500);
 		cout << "\033[2J\033[H";
 		cout << "\n\n\033[42m\033[30mYou won!!\033[40m\033[37m" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
+		PlaySound(TEXT("samus.wav"), NULL, SND_SYNC);
+
 	}
-	else if (!plWin && cpuWin) {
+	else if (!plWin && cpuWin) {		
 		Sleep(1500);
 		cout << "\033[2J\033[H";
 		cout << "\n\n\033[41m\033[30mYou lost...\033[40m\033[37m" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
+		PlaySound(TEXT("lose.wav"), NULL, SND_SYNC);
+
 	}
-	else if (!plWin && !cpuWin) {
+	else if (!plWin && !cpuWin) {		
 		Sleep(1500);
 		cout << "\033[2J\033[H";
 		cout << "\n\n\033[43m\033[30mIt's a draw!\033[40m\033[37m" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
+		PlaySound(TEXT("draw.wav"), NULL, SND_SYNC);
 	}
 }
 

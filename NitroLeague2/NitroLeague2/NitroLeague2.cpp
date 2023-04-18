@@ -78,11 +78,11 @@ void plTurn(Boat& player, int currentTurn) {
 				if (askNitro(player)) {
 					if (player.useNitro()) {
 						Sleep(1500);
-						cout << "\033[42m\033[30mNITRO SUCCESS!\033[40m\033[37m Speed is doubled!!" << endl;
+						cout << "\033[32mNITRO SUCCESS!\033[37m Speed is doubled!!" << endl;
 						Sleep(1000);
 					}
 					else {
-						cout << "\033[41m\033[30mNITRO FAIL!\033[40m\033[37m Speed is halved..." << endl;
+						cout << "\033[31mNITRO FAIL!\033[37m Speed is halved..." << endl;
 						Sleep(1000);
 					}
 				}
@@ -94,11 +94,11 @@ void plTurn(Boat& player, int currentTurn) {
 				cout << "Player " << player.getName() << " uses NITRO BOOST!" << endl;
 				Sleep(1500);
 				if (player.useNitro()) {
-					cout << "\033[42m\033[30mNITRO SUCCESS!\033[40m\033[37m Speed is doubled!!" << endl;
+					cout << "\033[32mNITRO SUCCESS!\033[37m Speed is doubled!!" << endl;
 					Sleep(1000);
 				}
 				else {
-					cout << "\033[41m\033[30mNITRO FAIL!\033[40m\033[37m Speed is halved..." << endl;
+					cout << "\033[31mNITRO FAIL!\033[37m Speed is halved..." << endl;
 					Sleep(1000);
 				}
 			}
@@ -159,12 +159,14 @@ int main()
 	Boat cpuBoat(cpuName, 0, 0, true, "M", 0);
 	PlaySound(TEXT("race.wav"), NULL, SND_LOOP | SND_ASYNC);
 	for (int i = 1; i <= 5; i++) {
-		cout << "\033[2J\033[H";
-		cout << "\n\n\033[33mROUND " << i << "\033[37m\n";
-		cout << "\n\033[32mYour turn.\033[37m" << endl;
+		cout << "\033[2J\033[H"; // Borrar pantalla y poner cursor al principio
+		cout << "\n\t\t\033[33m**************" << endl;
+		cout << "\t\t*   ROUND " << i << "  *" << endl;
+		cout << "\t\t**************" << endl;
+		cout << "\n\033[42m\033[37mYour turn.\033[40m" << endl;
 		Sleep(500);
 		plTurn(plBoat,i);
-		cout << "\n\033[31mCPU turn.\033[37m" << endl;
+		cout << "\n\033[41m\033[30mCPU turn.\033[40m\033[37m" << endl;
 		Sleep(500);
 		plTurn(cpuBoat,i);
 		boatGraphics(plBoat);

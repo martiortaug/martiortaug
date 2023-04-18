@@ -15,8 +15,12 @@ Boat cpu;
 string gameIntro() {
 	string plName;
 	srand(time(0));
-	cout << "Nitro League 2!!" << endl;
-	cout << "Welcome to the most exciting boat race! Please insert your racer name:" << endl;
+	cout << "\n\t\t******************************";
+	cout << "\n\t\t*\t\t\t     *";
+	cout << "\n\t\t*\tNitro League 2\t     *";
+	cout << "\n\t\t*\t\t\t     *";
+	cout << "\n\t\t******************************";
+	cout << "\n\nWelcome to the most exciting boat race!\nPlease insert your racer name:" << endl;
 	cin >> plName;
 	cout << "The race begins in..." << endl;
 	Sleep(1000);
@@ -101,7 +105,7 @@ void plTurn(Boat& player, int currentTurn) {
 		Sleep(1500);
 		cout << "Player " << player.getName() << "'s boat advances " << distAdv << "m!!" << endl;
 		Sleep(1500);
-		cout << "Player " << player.getName() << "'s total distance is " << player.getDistance() << endl;
+		cout << "Player " << player.getName() << "'s total distance is " << player.getDistance() << "m." << endl;
 		Sleep(3500);
 		
 }
@@ -109,6 +113,9 @@ void plTurn(Boat& player, int currentTurn) {
 void boatGraphics(Boat player) {
 	cout << "\n\n";
 	int preDist = player.getSpeed() - player.getTurnDie();
+	if (preDist > 28) {
+		preDist = 20;
+	}
 	if (player.getType() == "H") {
 		cout << "YOU\n";
 	}
@@ -164,21 +171,31 @@ int main()
 			plWin = true;
 			cpuWin = false;
 		}
-		else {
+		else if (player.getDistance() < cpu.getDistance()) {
 			plWin = false;
 			cpuWin = true;
 		}
+		else {
+			plWin = false;
+			cpuWin = false;
+		}
 	}
 
-	if (plWin) {
+	if (plWin && !cpuWin) {
 		Sleep(1500);
 		cout << "\n\nYou won!!" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
 	}
-	else {
+	else if (!plWin && cpuWin) {
 		Sleep(1500);
 		cout << "\n\nYou lost..." << endl;
+		Sleep(1500);
+		cout << "Thanks for playing :) \nGAME OVER." << endl;
+	}
+	else {
+		Sleep(1500);
+		cout << "\n\nIt's a draw!" << endl;
 		Sleep(1500);
 		cout << "Thanks for playing :) \nGAME OVER." << endl;
 	}

@@ -121,10 +121,10 @@ void boatGraphics(Boat player) {
 		preDist = 20;
 	}
 	if (player.getType() == "H") {
-		cout << "YOU\n";
+		cout << "\033[42m\033[37mYOU\033[40m\n";
 	}
 	else {
-		cout << player.getName() << "\n";
+		cout << "\033[41m\033[30m" << player.getName() << "\033[40m\033[37m\n";
 	}
 	if (preDist > 0) {
 		for (int i = 0; i < preDist; i++) {
